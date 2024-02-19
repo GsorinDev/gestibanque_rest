@@ -43,4 +43,9 @@ public class BanqueController {
 	public void deleteBanque(@PathVariable int id) {
 		banqueService.deleteBanque(id);
 	}
+	
+	@GetMapping("/{id}")
+	public Banque getBanque(@PathVariable int id) {
+		return banqueService.getBanque(id);
+	}
 }

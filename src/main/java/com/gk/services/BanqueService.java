@@ -24,5 +24,9 @@ public class BanqueService {
 	public void deleteBanque(int idBanque) {
 		banqueRepository.deleteById(idBanque);
 	}
+	
+	public Banque getBanque(int idBanque) {
+		return banqueRepository.findById(idBanque).get();
+	}
 
 }
