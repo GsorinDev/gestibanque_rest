@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  my-mysql-gestibanque:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: toto
+      MYSQL_DATABASE: gestibanque
+      MYSQL_USER: toto
+      MYSQL_PASSWORD: toto
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - web
+  spring-app:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: siplify/Backspring
+    container_name: spring-app-container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://gestibanque:3306/ams?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: toto
+      SPRING_DATASOURCE_PASSWORD: toto
+    ports:
+      - "8081:8081"
+    depends_on:
+      - my-mysql-gestibanque
+    networks:
+      - web
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: pmadmin_cont
+    depends_on:
+      - my-mysql-gestibanque
+    restart: always
+    ports:
+      - 8086:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - web
+
+volumes:
+  mysql-data:
+
+networks:
+  web:
